@@ -1,26 +1,294 @@
 @import "tailwindcss";
 
 :root {
+  /* Default black theme variables */
+  --card: #17181c;
+  --ring: #1da1f2;
+  --input: #22303c;
+  --muted: #181818;
+  --accent: #061622;
+  --border: #242628;
+  --chart-1: #1e9df1;
+  --chart-2: #00b87a;
+  --chart-3: #f7b928;
+  --chart-4: #17bf63;
+  --chart-5: #e0245e;
+  --popover: #000000;
+  --primary: #1c9cf0;
+  --sidebar: #17181c;
+  --font-mono: Menlo, monospace;
+  --font-sans: Open Sans, sans-serif;
+  --secondary: #f0f3f4;
+  --background: #000000;
+  --font-serif: Georgia, serif;
+  --foreground: #e7e9ea;
+  --destructive: #f4212e;
+  --shadow-blur: 0px;
+  --shadow-color: rgba(29,161,242,0.25);
+  --sidebar-ring: #1da1f2;
+  --shadow-spread: 0px;
+  --shadow-opacity: 0;
+  --sidebar-accent: #061622;
+  --sidebar-border: #38444d;
+  --card-foreground: #d9d9d9;
+  --shadow-offset-x: 0px;
+  --shadow-offset-y: 2px;
+  --sidebar-primary: #1da1f2;
+  --muted-foreground: #72767a;
+  --accent-foreground: #1c9cf0;
+  --popover-foreground: #e7e9ea;
+  --primary-foreground: #ffffff;
+  --sidebar-foreground: #d9d9d9;
+  --secondary-foreground: #0f1419;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #1c9cf0;
+  --sidebar-primary-foreground: #ffffff;
+}
+
+.light {
+  /* Light theme variables */
+  --card: #f7f8f8;
+  --ring: #1da1f2;
+  --input: #f7f9fa;
+  --muted: #E5E5E6;
+  --accent: #E3ECF6;
+  --border: #e1eaef;
+  --radius: 1.3rem;
+  --chart-1: #1e9df1;
+  --chart-2: #00b87a;
+  --chart-3: #f7b928;
+  --chart-4: #17bf63;
+  --chart-5: #e0245e;
+  --popover: #ffffff;
+  --primary: #1e9df1;
+  --sidebar: #f7f8f8;
+  --secondary: #0f1419;
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #0f1419;
+  --shadow-color: rgba(29,161,242,0.15);
+  --sidebar-ring: #1da1f2;
+  --sidebar-accent: #E3ECF6;
+  --sidebar-border: #e1e8ed;
+  --card-foreground: #0f1419;
+  --sidebar-primary: #1e9df1;
+  --muted-foreground: #0f1419;
+  --accent-foreground: #1e9df1;
+  --popover-foreground: #0f1419;
+  --primary-foreground: #ffffff;
+  --sidebar-foreground: #0f1419;
+  --secondary-foreground: #ffffff;
+  --destructive-foreground: #ffffff;
+  --sidebar-accent-foreground: #1e9df1;
+  --sidebar-primary-foreground: #ffffff;
 }
 
 @theme inline {
+  --color-card: var(--card);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-border: var(--border);
+  --color-radius: var(--radius);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-popover: var(--popover);
+  --color-primary: var(--primary);
+  --color-sidebar: var(--sidebar);
+  --color-font-mono: var(--font-mono);
+  --color-font-sans: var(--font-sans);
+  --color-secondary: var(--secondary);
   --color-background: var(--background);
+  --color-font-serif: var(--font-serif);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-destructive: var(--destructive);
+  --color-shadow-blur: var(--shadow-blur);
+  --color-shadow-color: var(--shadow-color);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-shadow-spread: var(--shadow-spread);
+  --color-shadow-opacity: var(--shadow-opacity);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-card-foreground: var(--card-foreground);
+  --color-shadow-offset-x: var(--shadow-offset-x);
+  --color-shadow-offset-y: var(--shadow-offset-y);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Map slate utilities to our theme variables to dynamically support the black theme */
+  --color-slate-50: var(--background);
+  --color-slate-100: var(--muted);
+  --color-slate-200: var(--border);
+  --color-slate-300: var(--border);
+  --color-slate-400: var(--muted-foreground);
+  --color-slate-500: var(--muted-foreground);
+  --color-slate-600: var(--muted-foreground);
+  --color-slate-700: var(--foreground);
+  --color-slate-800: var(--foreground);
+  --color-slate-900: var(--foreground);
+  --color-slate-950: var(--background);
+
+  /* Retain existing font mappings for layout compatibility */
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+  --font-serif: var(--font-serif);
+  --font-inter: var(--font-inter);
+  --font-jakarta: var(--font-plus-jakarta);
+  --font-instrument: var(--font-instrument-serif);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
 }
+
+/* Glassmorphism custom components */
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.01);
+  background-blend-mode: luminosity;
+  backdrop-filter: blur(4px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.liquid-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1.4px;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Spotlight Background Styles */
+.spotlight-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #0a0a0c 0%, #000000 100%);
+}
+
+.spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.spotlight {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.85;
+  filter: blur(120px);
+}
+
+.spotlight-left {
+  top: 10%;
+  left: 15%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, transparent 70%);
+}
+
+.spotlight-mid {
+  top: 35%;
+  left: 45%;
+  width: 750px;
+  height: 750px;
+  background: radial-gradient(circle, rgba(251, 113, 133, 0.25) 0%, transparent 70%);
+}
+
+.spotlight-right {
+  top: 20%;
+  left: 75%;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(225, 29, 72, 0.25) 0%, transparent 70%);
+}
+
+.spotlight-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+}
+
+.spotlight-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 80px 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.spotlight-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+}
+
+.spotlight-description {
+  font-size: 1.25rem;
+  color: #a1a1aa;
+  max-width: 600px;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.spotlight-button {
+  padding: 12px 24px;
+  background-color: #f43f5e;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.spotlight-button:hover {
+  background-color: #e11d48;
+  box-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+}
+
+/* Custom overrides to map bg-white to var(--card) in the black theme */
+.bg-white {
+  background-color: var(--card) !important;
+}
+.bg-white\/80 {
+  background-color: color-mix(in srgb, var(--card) 80%, transparent) !important;
+}
+.bg-white\/50 {
+  background-color: color-mix(in srgb, var(--card) 50%, transparent) !important;
+}
+.bg-white\/10 {
+  background-color: color-mix(in srgb, var(--card) 10%, transparent) !important;
+}
+
+
