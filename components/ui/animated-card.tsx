@@ -90,7 +90,7 @@ export function CardDescription({ className, ...props }: CardDescriptionProps) {
   return (
     <p
       className={cn(
-        "text-sm text-slate-500",
+        "text-sm text-slate-400",
         className
       )}
       {...props}
@@ -265,10 +265,10 @@ export function VisualDataEngineering({
       {/* Node 1: Sources */}
       <div className="absolute top-[90px] left-[40px] -translate-x-1/2 -translate-y-1/2 flex flex-col gap-1.5 z-10">
         <motion.div animate={step === 1 ? { x: [-1, 1, -1] } : {}} transition={{ repeat: Infinity, duration: 0.2 }} className={`w-8 h-8 rounded-lg bg-white border ${step === 1 ? 'border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]' : 'border-slate-200'} flex items-center justify-center transition-colors duration-500`}>
-          <Database className={`w-4 h-4 ${step === 1 ? 'text-red-400' : 'text-slate-500'} transition-colors duration-500`} />
+          <Database className={`w-4 h-4 ${step === 1 ? 'text-red-400' : 'text-slate-400'} transition-colors duration-500`} />
         </motion.div>
         <motion.div animate={step === 1 ? { x: [1, -1, 1] } : {}} transition={{ repeat: Infinity, duration: 0.2 }} className={`w-8 h-8 rounded-lg bg-white border ${step === 1 ? 'border-red-500 shadow-[0_0_10px_rgba(239,68,68,0.2)]' : 'border-slate-200'} flex items-center justify-center transition-colors duration-500`}>
-          <Smartphone className={`w-4 h-4 ${step === 1 ? 'text-red-400' : 'text-slate-500'} transition-colors duration-500`} />
+          <Smartphone className={`w-4 h-4 ${step === 1 ? 'text-red-400' : 'text-slate-400'} transition-colors duration-500`} />
         </motion.div>
       </div>
 
@@ -523,7 +523,7 @@ export function VisualCloudPlatform({
       <div className="absolute top-[90px] left-[130px] -translate-x-1/2 -translate-y-1/2 z-10 w-14 h-14 flex flex-wrap gap-1 items-center justify-center">
         {step < 2 && (
           <div className="w-10 h-10 bg-slate-100 border border-slate-200 rounded flex items-center justify-center">
-            <Server className="w-4 h-4 text-slate-500" />
+            <Server className="w-4 h-4 text-slate-400" />
           </div>
         )}
         {step === 2 && (
