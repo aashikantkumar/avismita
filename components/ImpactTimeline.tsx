@@ -277,10 +277,13 @@ export function ImpactTimeline() {
                 const isActive = activeCard === idx;
                 const Icon = item.icon;
                 return (
-                  <div 
+                  <button 
                     key={idx} 
-                    className="flex items-stretch gap-6 group cursor-pointer"
+                    type="button"
+                    className="flex items-stretch gap-6 group cursor-pointer w-full text-left"
                     onMouseEnter={() => setActiveCard(idx)}
+                    onClick={() => setActiveCard(idx)}
+                    onFocus={() => setActiveCard(idx)}
                   >
                     {/* Timeline Dot */}
                     <div className="relative mt-2 hidden sm:flex shrink-0 w-12 items-start justify-center">
@@ -314,7 +317,7 @@ export function ImpactTimeline() {
                         </CardDescription>
                       </CardContent>
                     </Card>
-                  </div>
+                  </button>
                 );
               })}
             </div>
