@@ -344,15 +344,15 @@ function MobileServiceCards({ forceVisible = false }: { forceVisible?: boolean }
     <div className={`w-full relative z-30 px-5 pb-20 ${forceVisible ? "block" : "block md:hidden"}`}>
       <div className="max-w-2xl mx-auto space-y-8">
         {sectionsData.map((section, idx) => (
-          <article key={section.title} className="rounded-xl border border-slate-200 bg-white/90 shadow-lg overflow-hidden">
+          <article key={section.title} className="rounded-xl border border-slate-800 bg-slate-900/90 shadow-lg overflow-hidden">
             <div className="p-5 space-y-4">
               <div className="flex items-start gap-4">
                 <div className="text-3xl font-bold font-mono flex-none" style={{ color: section.mainColor }}>
                   0{idx + 1}
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-900">{section.title}</h3>
-                  <p className="text-sm text-slate-400 mt-1">A focused view of how this service moves from challenge to outcome.</p>
+                  <h3 className="text-2xl font-bold text-zinc-100">{section.title}</h3>
+                  <p className="text-sm text-zinc-400 mt-1">A focused view of how this service moves from challenge to outcome.</p>
                 </div>
               </div>
             </div>
@@ -367,8 +367,8 @@ function MobileServiceCards({ forceVisible = false }: { forceVisible?: boolean }
                     {stepIdx + 1}
                   </span>
                   <span>
-                    <span className="block text-base font-semibold text-slate-900">{step.title}</span>
-                    <span className="block text-sm leading-relaxed text-slate-400 mt-1">{step.desc}</span>
+                    <span className="block text-base font-semibold text-zinc-100">{step.title}</span>
+                    <span className="block text-sm leading-relaxed text-zinc-400 mt-1">{step.desc}</span>
                   </span>
                 </li>
               ))}

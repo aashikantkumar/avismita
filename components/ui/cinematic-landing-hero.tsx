@@ -352,7 +352,7 @@ export function CinematicHero({
 
   if (isStaticExperience) {
     return (
-      <div className="w-full">
+      <div key="static-hero" className="w-full">
         <section
           id={props.id}
           className={cn("relative w-full overflow-hidden bg-black text-white font-sans antialiased", className)}
@@ -379,7 +379,7 @@ export function CinematicHero({
   }
 
   return (
-    <div className="w-full">
+    <div key="cinematic-hero" className="w-full">
       <div
         ref={containerRef}
         className={cn("relative w-screen h-screen overflow-hidden flex items-center justify-center bg-black text-white font-sans antialiased", className)}

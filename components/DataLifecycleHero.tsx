@@ -813,6 +813,7 @@ export function DataLifecycleHero() {
   // Monitor Scroll Progress & Map to Stage
   useEffect(() => {
     const handleScroll = () => {
+      if (window.innerWidth < 1024) return;
       const element = containerRef.current;
       if (!element) return;
 
@@ -852,8 +853,8 @@ export function DataLifecycleHero() {
   useEffect(() => {
     if (!isAutoPlaying) return;
 
-    // Only auto-play if scroll progress is near zero (meaning the user hasn't scrolled deep)
-    if (scrollProgress > 0.05) return;
+    // Only auto-play if scroll progress is near zero on desktop, but always auto-play on mobile
+    if (scrollProgress > 0.05 && window.innerWidth >= 1024) return;
 
     const timer = setInterval(() => {
       setActiveStage(prev => (prev === 6 ? 1 : prev + 1));
@@ -901,13 +902,13 @@ export function DataLifecycleHero() {
     <div 
       id="lifecycle"
       ref={containerRef} 
-      className="relative w-full h-[380vh] bg-[#000000] text-[#e7e9ea]"
+      className="relative w-full h-auto lg:h-[380vh] bg-[#000000] text-[#e7e9ea]"
     >
       {/* Sticky Hero Wrapper */}
       <div 
         ref={spotlightRef}
         onMouseMove={handleMouseMove}
-        className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-between z-10 bg-[#000000]/95 spotlight-container"
+        className="relative lg:sticky top-0 left-0 w-full min-h-screen lg:h-screen overflow-visible lg:overflow-hidden flex flex-col justify-between z-10 bg-[#000000]/95 spotlight-container pb-16 lg:pb-0"
         style={{
           position: "sticky",
           background: "radial-gradient(circle 800px at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(30, 58, 138, 0.12) 0%, #000000 100%)"
@@ -1079,7 +1080,7 @@ export function DataLifecycleHero() {
               </a>
               <button 
                 onClick={() => handleStageClick(5)}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-950/40 hover:bg-slate-900/40 text-slate-300 hover:text-white rounded-full font-bold uppercase tracking-widest text-xs border border-white/10 hover:border-white/20 transition-all backdrop-blur"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-950/40 hover:bg-slate-900/40 text-white rounded-full font-bold uppercase tracking-widest text-xs border border-white/20 hover:border-white/40 transition-all backdrop-blur shadow-sm"
               >
                 <span>Book Demo</span>
               </button>
@@ -1127,7 +1128,7 @@ export function DataLifecycleHero() {
           <div className="lg:col-span-6 w-full flex justify-center relative">
             
             {/* Visualizer Frame */}
-            <div className="w-full max-w-[420px] aspect-[4/3.8] md:aspect-square bg-slate-950/35 border border-white/10 rounded-2xl p-5 flex flex-col justify-between overflow-hidden relative shadow-[0_0_80px_rgba(30,58,138,0.2)] backdrop-blur-xl">
+            <div className="w-full max-w-[420px] min-h-[380px] md:aspect-square bg-slate-950/35 border border-white/10 rounded-2xl p-5 flex flex-col justify-between overflow-hidden relative shadow-[0_0_80px_rgba(30,58,138,0.2)] backdrop-blur-xl">
               
               {/* Top Bar System Telemetry */}
               <div className="flex justify-between items-center pb-2 border-b border-white/5 font-mono text-[8.5px] text-slate-400">

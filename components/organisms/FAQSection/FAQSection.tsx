@@ -137,7 +137,7 @@ export function FAQSection() {
                   className="w-full flex justify-between items-center py-3 text-left group"
                 >
                   <span className={`text-[15px] sm:text-base font-medium transition-colors ${
-                    isOpen ? "text-rose-400" : "text-slate-200 group-hover:text-white"
+                    isOpen ? "text-rose-400" : "text-zinc-200 group-hover:text-white"
                   }`}>
                     {item.question}
                   </span>
