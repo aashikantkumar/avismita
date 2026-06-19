@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
-import { Snowflake, Database, Cloud, Hexagon, Server } from "lucide-react";
+import { Snowflake, Database, Cloud, Hexagon, Server, Zap, Shield } from "lucide-react";
+import { FAQSection } from "@/components/organisms/FAQSection";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -13,7 +15,6 @@ if (typeof window !== "undefined") {
 const INJECTED_STYLES = `
   .gsap-reveal { visibility: hidden; }
 
-  /* Environment Overlays */
   .film-grain {
       position: absolute; inset: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 50; opacity: 0.05; mix-blend-mode: overlay;
@@ -22,22 +23,17 @@ const INJECTED_STYLES = `
 
   .bg-grid-theme {
       background-size: 60px 60px;
-      background-image: 
+      background-image:
           linear-gradient(to right, color-mix(in srgb, var(--color-foreground) 5%, transparent) 1px, transparent 1px),
           linear-gradient(to bottom, color-mix(in srgb, var(--color-foreground) 5%, transparent) 1px, transparent 1px);
       mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
       -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
   }
 
-  /* -------------------------------------------------------------------
-     PHYSICAL SKEUOMORPHIC MATERIALS (Restored 3D Depth)
-  ---------------------------------------------------------------------- */
-  
-  /* OUTSIDE THE CARD: Theme-aware text (Shadow in Light Mode, Glow in Dark Mode) */
   .text-3d-matte {
       color: var(--color-foreground);
-      text-shadow: 
-          0 10px 30px color-mix(in srgb, var(--color-foreground) 20%, transparent), 
+      text-shadow:
+          0 10px 30px color-mix(in srgb, var(--color-foreground) 20%, transparent),
           0 2px 4px color-mix(in srgb, var(--color-foreground) 10%, transparent);
   }
 
@@ -46,66 +42,184 @@ const INJECTED_STYLES = `
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      transform: translateZ(0); /* Hardware acceleration to prevent WebKit clipping bug */
-      filter: 
-          drop-shadow(0px 10px 20px color-mix(in srgb, var(--color-foreground) 15%, transparent)) 
+      transform: translateZ(0);
+      filter:
+          drop-shadow(0px 10px 20px color-mix(in srgb, var(--color-foreground) 15%, transparent))
           drop-shadow(0px 2px 4px color-mix(in srgb, var(--color-foreground) 10%, transparent));
   }
 
-  /* INSIDE THE CARD: Hardcoded Silver/White for the dark background, deep rich shadows */
-  .text-card-silver-matte {
-      background: linear-gradient(180deg, #FFFFFF 0%, #A1A1AA 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      transform: translateZ(0);
-      filter: 
-          drop-shadow(0px 12px 24px rgba(0,0,0,0.8)) 
-          drop-shadow(0px 4px 8px rgba(0,0,0,0.6));
-  }
-
-  /* Deep Physical Card with Dynamic Mouse Lighting */
   .premium-depth-card {
-      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-      box-shadow: 
-          0 40px 100px -20px rgba(0, 0, 0, 0.1),
-          0 20px 40px -20px rgba(0, 0, 0, 0.05),
-          inset 0 1px 2px rgba(255, 255, 255, 1),
-          inset 0 -2px 4px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(0, 0, 0, 0.05);
+      background: linear-gradient(145deg, #090e18 0%, #020617 100%);
+      box-shadow:
+          0 40px 100px -20px rgba(0, 0, 0, 0.6),
+          0 20px 40px -20px rgba(0, 0, 0, 0.4),
+          inset 0 1px 2px rgba(255, 255, 255, 0.05),
+          inset 0 -2px 4px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       position: relative;
   }
 
   .card-sheen {
       position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 50;
-      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.4) 0%, transparent 40%);
-      mix-blend-mode: normal; transition: opacity 0.3s ease;
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(244,63,94,0.15) 0%, transparent 40%);
+      mix-blend-mode: screen; transition: opacity 0.3s ease;
   }
-  
+
   .screen-glare {
-      background: linear-gradient(110deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 45%);
+      background: linear-gradient(110deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0) 45%);
   }
 
   .widget-depth {
-      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-      box-shadow: 
-          0 10px 20px rgba(0,0,0,0.05),
-          inset 0 1px 1px rgba(255,255,255,1),
-          inset 0 -1px 1px rgba(0,0,0,0.02);
-      border: 1px solid rgba(0,0,0,0.05);
+      background: linear-gradient(180deg, #0f172a 0%, #090d16 100%);
+      box-shadow:
+          0 10px 20px rgba(0, 0, 0, 0.4),
+          inset 0 1px 1px rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   .floating-ui-badge {
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
-      backdrop-filter: blur(24px); 
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(9, 13, 22, 0.7) 100%);
+      backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
-      box-shadow: 
-          0 0 0 1px rgba(0, 0, 0, 0.05),
-          0 25px 50px -12px rgba(0, 0, 0, 0.1),
-          inset 0 1px 1px rgba(255,255,255,1),
-          inset 0 -1px 1px rgba(0,0,0,0.02);
+      box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.08),
+          0 25px 50px -12px rgba(0, 0, 0, 0.5),
+          inset 0 1px 1px rgba(255, 255, 255, 0.05);
   }
 `;
+
+const platformItems = [
+  { name: "Databricks", detail: "Unified Analytics", Icon: Hexagon, color: "text-red-500", shell: "from-red-500/20 to-orange-500/20", border: "border-red-500/30" },
+  { name: "Snowflake", detail: "Data Cloud", Icon: Snowflake, color: "text-blue-500", shell: "from-blue-400/20 to-blue-300/20", border: "border-blue-400/30" },
+  { name: "Microsoft Fabric", detail: "End-to-End Analytics", Icon: Database, color: "text-cyan-600", shell: "from-cyan-500/20 to-blue-600/20", border: "border-cyan-500/30" },
+  { name: "AWS", detail: "Cloud Infrastructure", Icon: Cloud, color: "text-orange-500", shell: "from-orange-400/20 to-yellow-500/20", border: "border-orange-400/30" },
+  { name: "Azure", detail: "Enterprise Cloud", Icon: Server, color: "text-blue-600", shell: "from-blue-500/20 to-cyan-500/20", border: "border-blue-500/30" },
+];
+
+const useStaticCinematicExperience = () => {
+  const [isStatic, setIsStatic] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px), (prefers-reduced-motion: reduce)");
+    const syncPreference = () => setIsStatic(mediaQuery.matches);
+
+    syncPreference();
+    mediaQuery.addEventListener("change", syncPreference);
+
+    return () => mediaQuery.removeEventListener("change", syncPreference);
+  }, []);
+
+  return isStatic;
+};
+
+const DefaultCardDescription = () => (
+  <div className="space-y-4 text-zinc-300 text-sm md:text-base lg:text-lg font-medium leading-relaxed mx-auto lg:mx-0 max-w-sm lg:max-w-2xl relative z-50">
+    <p>Avismita Technologies builds scalable data systems designed for real business environments. We focus on architecture, pipelines and analytics systems that remain stable as data grows in volume and complexity. Our approach emphasizes reliability, performance and long term maintainability.</p>
+    <p>Our team focuses on building scalable production systems using modern platforms including Databricks, Snowflake, Microsoft Fabric, AWS and Azure. We solve complex engineering challenges with a strong focus on reliability, scalability and long term maintainability.</p>
+  </div>
+);
+
+function DataArchitectureMockup({ mockupRef }: { mockupRef?: React.RefObject<HTMLDivElement | null> }) {
+  return (
+    <div className="relative w-full h-full flex items-center justify-center transform scale-[0.65] md:scale-85 lg:scale-100">
+      <div
+        ref={mockupRef}
+        className="relative w-[340px] h-[580px] rounded-[2rem] bg-[#090d16]/90 border border-slate-800/80 shadow-2xl flex flex-col p-6 will-change-transform transform-style-3d overflow-hidden"
+      >
+        <div className="absolute inset-0 screen-glare z-40 pointer-events-none" aria-hidden="true" />
+
+        <div className="text-center mb-6 z-10">
+          <h3 className="text-xl font-bold text-white tracking-widest uppercase drop-shadow-sm">Data Architecture</h3>
+          <div className="w-12 h-1 bg-rose-500 mx-auto mt-2 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.6)]" />
+        </div>
+
+        <div className="flex flex-col gap-4 relative z-10">
+          {platformItems.map(({ name, detail, Icon, color, shell, border }) => (
+            <div key={name} className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-[#090d16]/80 border border-slate-800 shadow-sm">
+              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${shell} flex items-center justify-center mr-4 border ${border}`}>
+                <Icon className={`w-6 h-6 ${color}`} />
+              </div>
+              <div>
+                <div className="text-white font-bold text-lg">{name}</div>
+                <div className="text-zinc-400 text-xs">{detail}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="floating-badge absolute flex top-6 lg:top-12 left-[-15px] lg:left-[-80px] floating-ui-badge rounded-xl lg:rounded-2xl p-3 lg:p-4 items-center gap-3 lg:gap-4 z-30">
+        <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-b from-rose-500/20 to-rose-900/10 flex items-center justify-center border border-rose-400/30 shadow-inner">
+          <Zap className="w-4 h-4 lg:w-5 lg:h-5 text-rose-300" />
+        </div>
+        <div>
+          <p className="text-white text-xs lg:text-sm font-bold tracking-tight">High Performance</p>
+          <p className="text-zinc-400 text-[10px] lg:text-xs font-medium">Scalable pipelines</p>
+        </div>
+      </div>
+
+      <div className="floating-badge absolute flex bottom-12 lg:bottom-20 right-[-15px] lg:right-[-80px] floating-ui-badge rounded-xl lg:rounded-2xl p-3 lg:p-4 items-center gap-3 lg:gap-4 z-30">
+        <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-b from-indigo-500/20 to-indigo-900/10 flex items-center justify-center border border-indigo-400/30 shadow-inner">
+          <Shield className="w-4 h-4 lg:w-5 lg:h-5 text-indigo-200" />
+        </div>
+        <div>
+          <p className="text-white text-xs lg:text-sm font-bold tracking-tight">Reliability</p>
+          <p className="text-zinc-400 text-[10px] lg:text-xs font-medium">Long term maintainability</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SystemsCard({
+  cardHeading,
+  cardDescription,
+  mainCardRef,
+  mockupRef,
+  revealClassName = "main-card gsap-reveal",
+}: {
+  cardHeading: string;
+  cardDescription: React.ReactNode;
+  mainCardRef?: React.RefObject<HTMLDivElement | null>;
+  mockupRef?: React.RefObject<HTMLDivElement | null>;
+  revealClassName?: string;
+}) {
+  return (
+    <div
+      ref={mainCardRef}
+      className={cn(
+        revealClassName,
+        "premium-depth-card relative overflow-hidden flex items-center justify-center pointer-events-auto w-[92vw] md:w-[85vw] h-[92vh] md:h-[85vh] rounded-[32px] md:rounded-[40px]"
+      )}
+    >
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/dark_data_architecture_bg.png"
+          alt="Who We Are Background"
+          fill
+          sizes="100vw"
+          className="object-cover opacity-35 mix-blend-screen"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#020617] via-[#020617]/85 to-transparent" />
+      </div>
+
+      <div className="card-sheen" aria-hidden="true" />
+
+      <div className="relative w-full h-full max-w-[80rem] mx-auto px-4 lg:px-12 flex flex-col justify-evenly lg:grid lg:grid-cols-2 items-center lg:gap-16 z-10 py-6 lg:py-0">
+        <div className="card-left-text order-2 lg:order-1 flex flex-col justify-center text-center lg:text-left z-50 w-full lg:max-w-none px-4 lg:px-0">
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-normal text-white mb-6 drop-shadow-sm">
+            {cardHeading}
+          </h2>
+          {cardDescription}
+        </div>
+
+        <div className="mockup-scroll-wrapper order-1 lg:order-2 relative w-full h-[380px] lg:h-[600px] flex items-center justify-center z-10" style={{ perspective: "1000px" }}>
+          <DataArchitectureMockup mockupRef={mockupRef} />
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export interface CinematicHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   brandName?: string;
@@ -120,23 +234,19 @@ export function CinematicHero({
   tagline1 = "Who We",
   tagline2 = "Are",
   cardHeading = "Scalable Data Systems",
-  cardDescription = (
-    <div className="space-y-4 text-slate-600 text-sm md:text-base lg:text-lg font-medium leading-relaxed mx-auto lg:mx-0 max-w-sm lg:max-w-2xl relative z-50">
-      <p>Avismita Technologies builds scalable data systems designed for real business environments. We focus on architecture, pipelines and analytics systems that remain stable as data grows in volume and complexity. Our approach emphasizes reliability, performance and long term maintainability.</p>
-      <p>Our team focuses on building scalable production systems using modern platforms including Databricks, Snowflake, Microsoft Fabric, AWS and Azure. We solve complex engineering challenges with a strong focus on reliability, scalability and long term maintainability.</p>
-    </div>
-  ),
+  cardDescription = <DefaultCardDescription />,
   className,
   ...props
 }: CinematicHeroProps) {
-
   const containerRef = useRef<HTMLDivElement>(null);
   const mainCardRef = useRef<HTMLDivElement>(null);
   const mockupRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
+  const isStaticExperience = useStaticCinematicExperience();
 
-  // 1. High-Performance Mouse Interaction Logic (Using requestAnimationFrame)
   useEffect(() => {
+    if (isStaticExperience) return;
+
     const handleMouseMove = (e: MouseEvent) => {
       if (window.scrollY > window.innerHeight * 2) return;
 
@@ -155,10 +265,10 @@ export function CinematicHero({
           const yVal = (e.clientY / window.innerHeight - 0.5) * 2;
 
           gsap.to(mockupRef.current, {
-            rotationY: xVal * 12,
-            rotationX: -yVal * 12,
+            rotationY: xVal * 8,
+            rotationX: -yVal * 8,
             ease: "power3.out",
-            duration: 1.2,
+            duration: 1.1,
           });
         }
       });
@@ -169,264 +279,150 @@ export function CinematicHero({
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(requestRef.current);
     };
-  }, []);
+  }, [isStaticExperience]);
 
-  // 2. Complex Cinematic Scroll Timeline
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
+    if (isStaticExperience || !containerRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.set(".text-brand", { autoAlpha: 0, y: -40, scale: 0.9, letterSpacing: "0.1em" });
-      gsap.set(".text-track", { autoAlpha: 0, y: 60, scale: 0.85, filter: "blur(20px)", rotationX: -20 });
+      gsap.set(".text-brand", { autoAlpha: 0, y: -34, scale: 0.94, letterSpacing: "0.12em" });
+      gsap.set(".text-track", { autoAlpha: 0, y: 46, scale: 0.9, filter: "blur(16px)", rotationX: -14 });
       gsap.set(".text-days", { autoAlpha: 1, clipPath: "inset(0 100% 0 0)" });
-      gsap.set(".main-card", { y: window.innerHeight + 200, autoAlpha: 1 });
+      gsap.set(".main-card", { y: window.innerHeight + 140, autoAlpha: 1 });
       gsap.set([".mockup-scroll-wrapper", ".floating-badge", ".phone-widget"], { autoAlpha: 0 });
+      gsap.set(".cinematic-stage", { opacity: 0.45 });
+      gsap.set(".cinematic-stage-1", { opacity: 1 });
 
-      const introTl = gsap.timeline({ delay: 0.3 });
+      const introTl = gsap.timeline({ delay: 0.2 });
       introTl
-        .to(".text-brand", { duration: 1.5, autoAlpha: 1, y: 0, scale: 1, letterSpacing: "0.3em", ease: "power3.out" })
-        .to(".text-track", { duration: 1.8, autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", rotationX: 0, ease: "expo.out" }, "-=1.0")
-        .to(".text-days", { duration: 1.4, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=1.2");
+        .to(".text-brand", { duration: 1.1, autoAlpha: 1, y: 0, scale: 1, letterSpacing: "0.3em", ease: "power3.out" })
+        .to(".text-track", { duration: 1.25, autoAlpha: 1, y: 0, scale: 1, filter: "blur(0px)", rotationX: 0, ease: "expo.out" }, "-=0.72")
+        .to(".text-days", { duration: 1.05, clipPath: "inset(0 0% 0 0)", ease: "power4.inOut" }, "-=0.88");
 
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=5000",
+          end: () => `+=${Math.min(4300, Math.max(3200, window.innerHeight * 3.8))}`,
           pin: true,
-          scrub: 1,
+          scrub: 0.65,
           anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
       scrollTl
-        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.15, filter: "blur(20px)", opacity: 0.2, ease: "power2.inOut", duration: 2 }, 0)
-        .to(".main-card", { y: 0, ease: "power3.inOut", duration: 2 }, 0)
-        .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 1.5 })
+        .to(".cinematic-stage-1", { opacity: 0.45, duration: 0.2 }, 0)
+        .to(".cinematic-stage-2", { opacity: 1, duration: 0.2 }, 0.1)
+        .to([".hero-text-wrapper", ".bg-grid-theme"], { scale: 1.1, filter: "blur(16px)", opacity: 0.2, ease: "power2.inOut", duration: 1.45 }, 0)
+        .to(".main-card", { y: 0, ease: "power3.inOut", duration: 1.45 }, 0)
+        .to(".main-card", { width: "100%", height: "100%", borderRadius: "0px", ease: "power3.inOut", duration: 1.05 })
         .fromTo(".mockup-scroll-wrapper",
-          { y: 300, z: -500, rotationX: 50, rotationY: -30, autoAlpha: 0, scale: 0.6 },
-          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 2.5 }, "-=0.8"
+          { y: 220, z: -360, rotationX: 38, rotationY: -22, autoAlpha: 0, scale: 0.7 },
+          { y: 0, z: 0, rotationX: 0, rotationY: 0, autoAlpha: 1, scale: 1, ease: "expo.out", duration: 1.7 }, "-=0.48"
         )
-        .fromTo(".phone-widget", { y: 40, autoAlpha: 0, scale: 0.95 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.15, ease: "back.out(1.2)", duration: 1.5 }, "-=1.5")
-        .fromTo(".floating-badge", { y: 100, autoAlpha: 0, scale: 0.7, rotationZ: -10 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.5)", duration: 1.5, stagger: 0.2 }, "-=2.0")
-        .to({}, { duration: 2.5 })
+        .fromTo(".phone-widget", { y: 28, autoAlpha: 0, scale: 0.97 }, { y: 0, autoAlpha: 1, scale: 1, stagger: 0.1, ease: "back.out(1.15)", duration: 1.0 }, "-=1.0")
+        .fromTo(".floating-badge", { y: 70, autoAlpha: 0, scale: 0.8, rotationZ: -6 }, { y: 0, autoAlpha: 1, scale: 1, rotationZ: 0, ease: "back.out(1.35)", duration: 1.0, stagger: 0.14 }, "-=1.25")
+        .to({}, { duration: 1.1 })
         .set(".hero-text-wrapper", { autoAlpha: 0 })
-        .to({}, { duration: 1.5 })
+        .to(".cinematic-stage-2", { opacity: 0.45, duration: 0.2 }, "pullback")
+        .to(".cinematic-stage-3", { opacity: 1, duration: 0.2 }, "pullback")
         .to([".mockup-scroll-wrapper", ".floating-badge"], {
-          scale: 0.9, y: -40, z: -200, autoAlpha: 0, ease: "power3.in", duration: 1.2, stagger: 0.05,
-        })
-        // Responsive card pullback sizing
-        .to(".main-card", {
-          width: isMobile ? "92vw" : "85vw",
-          height: isMobile ? "92vh" : "85vh",
-          borderRadius: isMobile ? "32px" : "40px",
-          ease: "expo.inOut",
-          duration: 1.8
+          scale: 0.92, y: -34, z: -180, autoAlpha: 0, ease: "power3.in", duration: 0.9, stagger: 0.04,
         }, "pullback")
-        .to(".company-info-reveal", { autoAlpha: 1, duration: 0.5 }, "pullback+=0.5")
-        .to(".main-card", { y: -window.innerHeight - 300, ease: "power3.in", duration: 1.5 }, "pullback+=0.8")
-        .fromTo(".company-info-reveal .stagger-item", 
-          { y: 40, opacity: 0 }, 
-          { y: 0, opacity: 1, stagger: 0.15, ease: "back.out(1.2)", duration: 1.2 }, 
-          "pullback+=1.2"
+        .to(".main-card", {
+          width: "85vw",
+          height: "85vh",
+          borderRadius: "40px",
+          ease: "expo.inOut",
+          duration: 1.15
+        }, "pullback+=0.05")
+        .to(".company-info-reveal", { autoAlpha: 1, pointerEvents: "auto", duration: 0.35 }, "pullback+=0.34")
+        .to(".main-card", { y: -window.innerHeight - 220, ease: "power3.in", duration: 1.0 }, "pullback+=0.5")
+        .fromTo(".company-info-reveal .stagger-item",
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, stagger: 0.1, ease: "back.out(1.15)", duration: 0.85 },
+          "pullback+=0.82"
         )
-        .to({}, { duration: 2.0 }); // Hold on screen to let user read
-
+        .to({}, { duration: 1.2 });
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isStaticExperience]);
+
+  if (isStaticExperience) {
+    return (
+      <div className="w-full">
+        <section
+          id={props.id}
+          className={cn("relative w-full overflow-hidden bg-black text-white font-sans antialiased", className)}
+          {...props}
+        >
+          <style dangerouslySetInnerHTML={{ __html: INJECTED_STYLES }} />
+          <div className="film-grain" aria-hidden="true" />
+          <div className="bg-grid-theme absolute inset-0 z-0 pointer-events-none opacity-50" aria-hidden="true" />
+          <div className="relative z-10 px-5 py-16 md:px-8 md:py-24">
+            <div className="mx-auto max-w-5xl text-center mb-10">
+              <p className="text-emerald-400 font-mono text-sm md:text-xl tracking-[0.3em] uppercase mb-3">{brandName}</p>
+              <h2 className="text-5xl md:text-7xl font-black leading-none text-white">{tagline1} {tagline2}</h2>
+            </div>
+            <div className="mx-auto flex justify-center mb-14">
+              <SystemsCard cardHeading={cardHeading} cardDescription={cardDescription} revealClassName="" />
+            </div>
+            <div className="mx-auto max-w-7xl">
+              <FAQSection />
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
-    <div
-      ref={containerRef}
-      className={cn("relative w-screen h-screen overflow-hidden flex items-center justify-center bg-slate-50 text-slate-900 font-sans antialiased", className)}
-      style={{ perspective: "1500px", zIndex: 100 }}
-      {...props}
-    >
-      <style dangerouslySetInnerHTML={{ __html: INJECTED_STYLES }} />
-      <div className="film-grain" aria-hidden="true" />
-      <div className="bg-grid-theme absolute inset-0 z-0 pointer-events-none opacity-50" aria-hidden="true" />
+    <div className="w-full">
+      <div
+        ref={containerRef}
+        className={cn("relative w-screen h-screen overflow-hidden flex items-center justify-center bg-black text-white font-sans antialiased", className)}
+        style={{ perspective: "1500px", zIndex: 100 }}
+        {...props}
+      >
+        <style dangerouslySetInnerHTML={{ __html: INJECTED_STYLES }} />
+        <div className="film-grain" aria-hidden="true" />
+        <div className="bg-grid-theme absolute inset-0 z-0 pointer-events-none opacity-50" aria-hidden="true" />
 
-      {/* BACKGROUND LAYER: Hero Texts */}
-      <div className="hero-text-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 will-change-transform transform-style-3d">
-        <h2 className="text-brand gsap-reveal text-emerald-400 font-mono text-xl md:text-3xl lg:text-4xl tracking-[0.3em] mb-4 uppercase drop-shadow-lg">
-          {brandName}
-        </h2>
-        <h1 className="text-track gsap-reveal text-3d-matte text-6xl md:text-8xl lg:text-[8rem] font-black tracking-tight mb-2 leading-none">
-          {tagline1}
-        </h1>
-        <h1 className="text-days gsap-reveal text-silver-matte text-6xl md:text-8xl lg:text-[8rem] font-black tracking-tighter leading-none">
-          {tagline2}
-        </h1>
-      </div>
+        <div className="hero-text-wrapper absolute z-10 flex flex-col items-center justify-center text-center w-screen px-4 will-change-transform transform-style-3d">
+          <h2 className="text-brand gsap-reveal text-emerald-400 font-mono text-xl md:text-3xl lg:text-4xl tracking-[0.3em] mb-4 uppercase drop-shadow-lg">
+            {brandName}
+          </h2>
+          <h1 className="text-track gsap-reveal text-3d-matte text-6xl md:text-8xl lg:text-[8rem] font-black tracking-normal mb-2 leading-none">
+            {tagline1}
+          </h1>
+          <h1 className="text-days gsap-reveal text-silver-matte text-6xl md:text-8xl lg:text-[8rem] font-black tracking-normal leading-none">
+            {tagline2}
+          </h1>
+        </div>
 
-      {/* REVEALED COMPANY INFO LAYER (Hidden behind the card initially, revealed when card slides up) */}
-      <div className="company-info-reveal absolute inset-0 z-15 flex flex-col items-center justify-center pointer-events-none opacity-0 bg-slate-50">
-        <div className="w-full max-w-5xl mx-auto px-6 text-center flex flex-col items-center justify-center">
-          <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center mb-8 stagger-item border border-rose-500/20 shadow-sm">
-            <Hexagon className="w-8 h-8 text-rose-500" />
-          </div>
-          <h3 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 mb-6 tracking-tight stagger-item leading-tight">
-            Building the future of <br className="hidden md:block"/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-orange-500">
-              Enterprise Technology
-            </span>
-          </h3>
-          <p className="text-slate-600 text-lg md:text-xl max-w-2xl stagger-item mb-12">
-            Avismita Technologies partners with global leaders to architect highly scalable data platforms that drive massive growth, operational efficiency, and innovation.
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-16 w-full max-w-4xl border-t border-slate-200 pt-12 stagger-item">
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-5xl font-black text-slate-900">100<span className="text-rose-500">+</span></span>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-3">Projects Shipped</span>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-5xl font-black text-slate-900">50<span className="text-rose-500">+</span></span>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-3">Global Experts</span>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-5xl font-black text-slate-900">99<span className="text-rose-500">%</span></span>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-3">System Uptime</span>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <span className="text-5xl font-black text-slate-900">24<span className="text-rose-500">/7</span></span>
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-widest mt-3">Active Support</span>
-            </div>
+        <div className="absolute bottom-6 left-1/2 z-40 hidden -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/35 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/80 backdrop-blur-md md:flex">
+          <span className="cinematic-stage cinematic-stage-1">Identity</span>
+          <span className="h-1 w-1 rounded-full bg-white/30" />
+          <span className="cinematic-stage cinematic-stage-2">Systems</span>
+          <span className="h-1 w-1 rounded-full bg-white/30" />
+          <span className="cinematic-stage cinematic-stage-3">Details</span>
+        </div>
+
+        <div className="company-info-reveal absolute inset-0 z-15 flex flex-col items-center justify-center pointer-events-none opacity-0 bg-black overflow-y-auto">
+          <div className="w-full max-w-7xl mx-auto px-6">
+            <FAQSection />
           </div>
         </div>
-      </div>
 
-      {/* FOREGROUND LAYER: The Physical Deep Blue Card */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none" style={{ perspective: "1500px" }}>
-        <div
-          ref={mainCardRef}
-          className="main-card premium-depth-card relative overflow-hidden gsap-reveal flex items-center justify-center pointer-events-auto w-[92vw] md:w-[85vw] h-[92vh] md:h-[85vh] rounded-[32px] md:rounded-[40px]"
-        >
-          {/* Added Background Image */}
-          <div className="absolute inset-0 z-0">
-            <img
-              src="/Gemini_Generated_Image_xgugwkxgugwkxgug (1).png"
-              alt="Who We Are Background"
-              className="w-full h-full object-cover opacity-40 mix-blend-overlay"
-            />
-            {/* Gradient overlay to ensure text remains readable */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#ffffff] via-[#f8fafc]/80 to-transparent" />
-          </div>
-
-          <div className="card-sheen" aria-hidden="true" />
-
-          {/* DYNAMIC RESPONSIVE GRID */}
-          <div className="relative w-full h-full max-w-[80rem] mx-auto px-4 lg:px-12 flex flex-col justify-evenly lg:grid lg:grid-cols-2 items-center lg:gap-16 z-10 py-6 lg:py-0">
-
-            {/* 1. LEFT (Desktop) / BOTTOM (Mobile): TEXT CONTENT */}
-            <div className="card-left-text order-2 lg:order-1 flex flex-col justify-center text-center lg:text-left z-50 w-full lg:max-w-none px-4 lg:px-0">
-              <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tighter text-slate-900 mb-6 drop-shadow-sm">
-                {cardHeading}
-              </h2>
-              {cardDescription}
-            </div>
-
-            {/* 2. RIGHT (Desktop) / TOP (Mobile): DATA ARCHITECTURE MOCKUP */}
-            <div className="mockup-scroll-wrapper order-1 lg:order-2 relative w-full h-[380px] lg:h-[600px] flex items-center justify-center z-10" style={{ perspective: "1000px" }}>
-
-              {/* Inner wrapper for safe CSS scaling */}
-              <div className="relative w-full h-full flex items-center justify-center transform scale-[0.65] md:scale-85 lg:scale-100">
-
-                <div
-                  ref={mockupRef}
-                  className="relative w-[340px] h-[580px] rounded-[2rem] bg-[#f8fafc] border border-slate-200 shadow-xl flex flex-col p-6 will-change-transform transform-style-3d overflow-hidden"
-                >
-                  <div className="absolute inset-0 screen-glare z-40 pointer-events-none" aria-hidden="true" />
-
-                  <div className="text-center mb-6 z-10">
-                    <h3 className="text-xl font-bold text-slate-900 tracking-widest uppercase drop-shadow-sm">Data Architecture</h3>
-                    <div className="w-12 h-1 bg-rose-500 mx-auto mt-2 rounded-full shadow-[0_0_10px_rgba(244,63,94,0.6)]"></div>
-                  </div>
-
-                  <div className="flex flex-col gap-4 relative z-10">
-                    {/* Databricks */}
-                    <div className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-white border border-slate-200 shadow-sm">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 flex items-center justify-center mr-4 border border-red-500/30">
-                        <Hexagon className="w-6 h-6 text-red-500" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">Databricks</div>
-                        <div className="text-slate-500 text-xs">Unified Analytics</div>
-                      </div>
-                    </div>
-
-                    {/* Snowflake */}
-                    <div className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-white border border-slate-200 shadow-sm">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-400/20 to-blue-300/20 flex items-center justify-center mr-4 border border-blue-400/30">
-                        <Snowflake className="w-6 h-6 text-blue-500" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">Snowflake</div>
-                        <div className="text-slate-500 text-xs">Data Cloud</div>
-                      </div>
-                    </div>
-
-                    {/* Microsoft Fabric */}
-                    <div className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-white border border-slate-200 shadow-sm">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500/20 to-blue-600/20 flex items-center justify-center mr-4 border border-cyan-500/30">
-                        <Database className="w-6 h-6 text-cyan-600" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">Microsoft Fabric</div>
-                        <div className="text-slate-500 text-xs">End-to-End Analytics</div>
-                      </div>
-                    </div>
-
-                    {/* AWS */}
-                    <div className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-white border border-slate-200 shadow-sm">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-400/20 to-yellow-500/20 flex items-center justify-center mr-4 border border-orange-400/30">
-                        <Cloud className="w-6 h-6 text-orange-500" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">AWS</div>
-                        <div className="text-slate-500 text-xs">Cloud Infrastructure</div>
-                      </div>
-                    </div>
-
-                    {/* Azure */}
-                    <div className="phone-widget widget-depth rounded-2xl p-4 flex items-center bg-white border border-slate-200 shadow-sm">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center mr-4 border border-blue-500/30">
-                        <Server className="w-6 h-6 text-blue-600" />
-                      </div>
-                      <div>
-                        <div className="text-slate-900 font-bold text-lg">Azure</div>
-                        <div className="text-slate-500 text-xs">Enterprise Cloud</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Floating Glass Badges */}
-                <div className="floating-badge absolute flex top-6 lg:top-12 left-[-15px] lg:left-[-80px] floating-ui-badge rounded-xl lg:rounded-2xl p-3 lg:p-4 items-center gap-3 lg:gap-4 z-30">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-b from-rose-500/20 to-rose-900/10 flex items-center justify-center border border-rose-400/30 shadow-inner">
-                    <span className="text-base lg:text-xl drop-shadow-sm" aria-hidden="true">⚡</span>
-                  </div>
-                  <div>
-                    <p className="text-slate-900 text-xs lg:text-sm font-bold tracking-tight">High Performance</p>
-                    <p className="text-slate-500 text-[10px] lg:text-xs font-medium">Scalable pipelines</p>
-                  </div>
-                </div>
-
-                <div className="floating-badge absolute flex bottom-12 lg:bottom-20 right-[-15px] lg:right-[-80px] floating-ui-badge rounded-xl lg:rounded-2xl p-3 lg:p-4 items-center gap-3 lg:gap-4 z-30">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-gradient-to-b from-indigo-500/20 to-indigo-900/10 flex items-center justify-center border border-indigo-400/30 shadow-inner">
-                    <span className="text-base lg:text-lg drop-shadow-sm" aria-hidden="true">🛡️</span>
-                  </div>
-                  <div>
-                    <p className="text-slate-900 text-xs lg:text-sm font-bold tracking-tight">Reliability</p>
-                    <p className="text-slate-500 text-[10px] lg:text-xs font-medium">Long term maintainability</p>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
+        <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none" style={{ perspective: "1500px" }}>
+          <SystemsCard
+            cardHeading={cardHeading}
+            cardDescription={cardDescription}
+            mainCardRef={mainCardRef}
+            mockupRef={mockupRef}
+          />
         </div>
       </div>
     </div>

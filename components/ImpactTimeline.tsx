@@ -260,7 +260,7 @@ export function ImpactTimeline() {
           <h2 className="text-4xl md:text-5xl font-bold font-sans tracking-wide text-slate-900 mb-4">
             System Evolution
           </h2>
-          <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto">
             Interactive visualization of our architectural impact from chaos to structured intelligence.
           </p>
         </div>
@@ -309,7 +309,7 @@ export function ImpactTimeline() {
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <CardDescription className="text-slate-600 text-base">
+                        <CardDescription className="text-slate-400 text-base">
                           {item.description}
                         </CardDescription>
                       </CardContent>
@@ -327,19 +327,19 @@ export function ImpactTimeline() {
             <div className="flex w-full border-b border-slate-200 bg-slate-50 z-20">
               <div className={cn(
                 "flex-1 py-4 text-center text-sm font-semibold tracking-widest uppercase transition-all duration-500",
-                activeCard <= 1 ? "text-red-500 bg-red-500/10 shadow-[inset_0_-2px_0_rgba(239,68,68,1)]" : "text-slate-500"
+                activeCard <= 1 ? "text-red-500 bg-red-500/10 shadow-[inset_0_-2px_0_rgba(239,68,68,1)]" : "text-slate-400"
               )}>
                 Before
               </div>
               <div className={cn(
                 "flex-1 py-4 text-center text-sm font-semibold tracking-widest uppercase transition-all duration-500",
-                activeCard === 2 ? "text-rose-500 bg-rose-500/10 shadow-[inset_0_-2px_0_rgba(244,63,94,1)]" : "text-slate-500"
+                activeCard === 2 ? "text-rose-500 bg-rose-500/10 shadow-[inset_0_-2px_0_rgba(244,63,94,1)]" : "text-slate-400"
               )}>
                 Processing
               </div>
               <div className={cn(
                 "flex-1 py-4 text-center text-sm font-semibold tracking-widest uppercase transition-all duration-500",
-                activeCard === 3 ? "text-rose-500 bg-rose-500/20 shadow-[inset_0_-2px_0_rgba(244,63,94,1)]" : "text-slate-500"
+                activeCard === 3 ? "text-rose-500 bg-rose-500/20 shadow-[inset_0_-2px_0_rgba(244,63,94,1)]" : "text-slate-400"
               )}>
                 After
               </div>

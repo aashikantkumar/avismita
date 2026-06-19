@@ -19,6 +19,7 @@ type ContactCardProps = React.ComponentProps<'div'> & {
 	title?: string;
 	description?: string;
 	contactInfo?: ContactInfoProps[];
+	locationMap?: React.ReactNode;
 	formSectionClassName?: string;
 };
 
@@ -26,10 +27,10 @@ export function ContactCard({
 	title = 'Contact With Us',
 	description = 'If you have any questions regarding our Services or need help, please fill out the form here. We do our best to respond within 1 business day.',
 	contactInfo,
+	locationMap,
 	className,
 	formSectionClassName,
 	children,
-	...props
 }: ContactCardProps) {
 	return (
 		<motion.div
@@ -41,7 +42,6 @@ export function ContactCard({
 				'bg-white border border-slate-200 relative grid h-full w-full shadow-xl md:grid-cols-2 lg:grid-cols-3 rounded-xl overflow-hidden',
 				className,
 			)}
-			{...props}
 		>
 			<PlusIcon className="absolute -top-3 -left-3 h-6 w-6 text-slate-300" />
 			<PlusIcon className="absolute -top-3 -right-3 h-6 w-6 text-slate-300" />
@@ -49,7 +49,7 @@ export function ContactCard({
 			<PlusIcon className="absolute -right-3 -bottom-3 h-6 w-6 text-slate-300" />
 			<div className="flex flex-col justify-between lg:col-span-2">
 				<div className="relative h-full space-y-4 px-4 py-8 md:p-8">
-					<motion.h1 
+					<motion.h1
 						initial={{ opacity: 0, x: -20 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
@@ -58,12 +58,12 @@ export function ContactCard({
 					>
 						{title}
 					</motion.h1>
-					<motion.p 
+					<motion.p
 						initial={{ opacity: 0, x: -20 }}
 						whileInView={{ opacity: 1, x: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.5, delay: 0.3 }}
-						className="text-slate-600 max-w-xl text-sm md:text-base lg:text-lg"
+						className="text-slate-400 max-w-xl text-sm md:text-base lg:text-lg"
 					>
 						{description}
 					</motion.p>
@@ -80,6 +80,17 @@ export function ContactCard({
 							</motion.div>
 						))}
 					</div>
+					{locationMap && (
+						<motion.div
+							initial={{ opacity: 0, y: 20 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.5, delay: 0.7 }}
+							className="pt-6 flex justify-start"
+						>
+							{locationMap}
+						</motion.div>
+					)}
 				</div>
 			</div>
 			<motion.div
@@ -112,7 +123,7 @@ function ContactInfo({
 			</div>
 			<div>
 				<p className="font-medium text-slate-900">{label}</p>
-				<p className="text-slate-600 text-xs">{value}</p>
+				<p className="text-slate-400 text-xs">{value}</p>
 			</div>
 		</div>
 	);
