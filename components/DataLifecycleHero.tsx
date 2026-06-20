@@ -17,12 +17,11 @@ import {
   ArrowUpRight, 
   Zap,
   Activity,
-  Menu,
-  X,
   Play,
   Pause
 } from "lucide-react";
 import { gsap } from "gsap";
+import { Navbar } from "./Navbar";
 
 // ----------------------------------------------------
 // TYPES & CONFIG
@@ -804,7 +803,6 @@ const GrowthStage = React.memo(() => {
 export function DataLifecycleHero() {
   const [activeStage, setActiveStage] = useState(1);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
@@ -897,6 +895,13 @@ export function DataLifecycleHero() {
       spotlightRef.current.style.setProperty("--mouse-y", `${y}px`);
     }
   };
+  const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const element = document.getElementById('contact');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <div 
@@ -937,99 +942,7 @@ export function DataLifecycleHero() {
         {/* ----------------------------------------------------
             1. NAVIGATION HEADER
         ---------------------------------------------------- */}
-        <header className="relative w-full z-40 px-6 md:px-12 py-6 border-b border-white/5 backdrop-blur-md bg-slate-950/20 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="relative h-10 w-10 md:h-11 md:w-11 rounded-xl overflow-hidden border border-white/10 flex items-center justify-center bg-slate-950/80 shadow-[0_0_20px_rgba(59,130,246,0.25)]">
-              <Image
-                src="/Avismita_Technologies_Logo-removebg-preview (1).png"
-                alt="Avismita Technologies Logo"
-                width={44}
-                height={44}
-                className="w-full h-full object-cover scale-110"
-              />
-            </div>
-            <div className="flex flex-col justify-center">
-              <span className="font-extrabold text-lg md:text-xl tracking-wider text-white font-mono leading-none">
-                AVISMITA
-              </span>
-              <span className="text-[8px] font-bold text-blue-400 tracking-widest uppercase mt-1">
-                TECHNOLOGIES
-              </span>
-            </div>
-          </div>
- 
-          {/* Desktop Menu */}
-          <nav className="hidden md:flex space-x-10">
-            {[
-              { label: "LIFECYCLE", href: "#lifecycle" },
-              { label: "SERVICES", href: "#what-we-do" },
-              { label: "IMPACT", href: "#impact" },
-              { label: "ABOUT", href: "#about" },
-            ].map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                className="text-xs font-bold tracking-widest text-slate-400 hover:text-white transition-colors font-mono"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
- 
-          {/* Action Button */}
-          <div className="hidden md:flex items-center gap-4">
-            <a 
-              href="#contact" 
-              className="inline-block px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full text-xs font-bold tracking-widest transition-all shadow-[0_0_20px_rgba(37,99,235,0.25)] hover:shadow-[0_0_25px_rgba(37,99,235,0.4)]"
-            >
-              BOOK DEMO
-            </a>
-          </div>
- 
-          {/* Mobile Hamburger */}
-          <button aria-label="Toggle Navigation Menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white hover:text-blue-400 transition-colors p-2 z-50"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </header>
- 
-        {/* Mobile Full-Screen Navigation */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <motion.div 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-[#000000]/98 backdrop-blur-lg z-30 flex flex-col justify-center items-center space-y-8"
-            >
-              {[
-                { label: "LIFECYCLE", href: "#lifecycle" },
-                { label: "SERVICES", href: "#what-we-do" },
-                { label: "IMPACT", href: "#impact" },
-                { label: "ABOUT", href: "#about" },
-              ].map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-xl font-bold tracking-widest text-white hover:text-blue-400 transition-colors font-mono"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <a
-                href="#contact"
-                onClick={() => setMobileMenuOpen(false)}
-                className="px-8 py-3 bg-blue-600 text-white font-bold tracking-widest rounded-full hover:bg-blue-500 transition-all text-sm inline-block shadow-lg"
-              >
-                BOOK DEMO
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <Navbar />
 
         {/* ----------------------------------------------------
             2. MAIN COLUMNS LAYOUT
@@ -1058,32 +971,34 @@ export function DataLifecycleHero() {
 
             {/* Giant Premium Headline */}
             <h1 className="text-[36px] sm:text-[46px] md:text-[54px] lg:text-[62px] font-extrabold uppercase tracking-tight leading-[1.05] text-white font-sans max-w-xl">
-              Transform Raw Data Into <br className="hidden md:inline" />
+              Databricks, Snowflake & <br className="hidden md:inline" />
               <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                Actionable Intelligence
+                Microsoft Fabric Consulting
               </span>
             </h1>
 
             {/* Subheadline */}
             <p className="text-[13px] md:text-[15px] text-slate-400 leading-relaxed max-w-[500px]">
-              We collect, process, analyze, and transform complex business data into insights that drive measurable growth. Experience the complete intelligence loop in action.
+              We help startups and enterprises build scalable data platforms, analytics solutions, and modern cloud architectures using Databricks, Snowflake, Microsoft Fabric, Azure, and AWS.
             </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto">
               <a 
                 href="#contact"
+                onClick={handleScrollToContact}
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-full font-bold uppercase tracking-widest text-xs transition-all shadow-[0_0_20px_rgba(37,99,235,0.25)] hover:shadow-[0_0_30px_rgba(37,99,235,0.4)]"
               >
-                <span>Get Started</span>
+                <span>Schedule Free Consultation</span>
                 <ArrowRight size={13} className="stroke-[2.5]" />
               </a>
-              <button 
-                onClick={() => handleStageClick(5)}
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-950/40 hover:bg-slate-900/40 text-white rounded-full font-bold uppercase tracking-widest text-xs border border-white/20 hover:border-white/40 transition-all backdrop-blur shadow-sm"
+              <a 
+                href="#contact"
+                onClick={handleScrollToContact}
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-950/40 hover:bg-slate-900/40 text-slate-300 hover:text-white rounded-full font-bold uppercase tracking-widest text-xs border border-white/10 hover:border-white/20 transition-all backdrop-blur cursor-pointer"
               >
-                <span>Book Demo</span>
-              </button>
+                <span>Discuss Your Data Project</span>
+              </a>
             </div>
 
             {/* Stepper Progress Bar (Enterprise SaaS Credibility) */}

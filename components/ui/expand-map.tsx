@@ -12,8 +12,8 @@ interface LocationMapProps {
 }
 
 export function LocationMap({
-  location = "Bankura, West Bengal 700102, IN",
-  coordinates = "23.2324° N, 87.0633° E",
+  location = "Kolkata, India",
+  coordinates = "Remote-First Global Delivery Model",
   className,
 }: LocationMapProps) {
   const [isHovered, setIsHovered] = useState(false)
