@@ -47,9 +47,10 @@ export function ContactSection() {
   };
 
   return (
-    <GeometricBackground className="py-24 border-t border-slate-200">
-      <div id="contact" className="px-6 md:px-12 max-w-5xl mx-auto w-full relative z-20">
-        <ContactCard
+    <div id="contact">
+      <GeometricBackground className="py-24 border-t border-slate-200">
+        <div className="px-6 md:px-12 max-w-5xl mx-auto w-full relative z-20">
+          <ContactCard
           title="Inquire"
           description="Request analytics consulting or custom curriculum training. We do our best to respond within 1 business day."
           locationMap={<LocationMap />}
@@ -67,7 +68,7 @@ export function ContactSection() {
             {
               icon: MapPinIcon,
               label: 'Location',
-              value: 'Bankura, West Bengal 700102, IN',
+              value: 'Kolkata, India\nRemote-First Global Delivery Model',
               className: 'col-span-2',
             }
           ]}
@@ -109,5 +110,6 @@ export function ContactSection() {
         </ContactCard>
       </div>
     </GeometricBackground>
+    </div>
   );
 }
