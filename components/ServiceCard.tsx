@@ -29,7 +29,7 @@ export function ServiceCard({
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = e.currentTarget.getAttribute('href');
     if (href && href.startsWith('#')) {
-      e.preventDefault();d
+      e.preventDefault();
       const element = document.getElementById(href.substring(1));
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
