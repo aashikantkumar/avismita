@@ -112,7 +112,7 @@ export function CardVisual({ className, ...props }: CardProps) {
 const DiagramPath = ({ startX, endX, active, activeColor, dashed = true }: { startX: number, endX: number, active: boolean, activeColor: string, dashed?: boolean }) => (
   <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
     {/* Background faint line */}
-    <path d={`M ${startX} 90 L ${endX} 90`} stroke="#e2e8f0" strokeWidth="2" strokeDasharray={dashed ? "4 4" : "none"} />
+    <path d={`M ${startX} 90 L ${endX} 90`} stroke="#1e293b" strokeWidth="2" strokeDasharray={dashed ? "4 4" : "none"} />
     
     {/* Active bright animated line */}
     {active && (
@@ -131,7 +131,7 @@ const DiagramPath = ({ startX, endX, active, activeColor, dashed = true }: { sta
     {!active && (
        <motion.path
         d={`M ${startX} 90 L ${endX} 90`}
-        stroke="#cbd5e1"
+        stroke="#334155"
         strokeWidth="1"
         strokeDasharray="4 4"
         initial={{ strokeDashoffset: 12 }}
@@ -151,7 +151,7 @@ const Label = ({ text, color, visible }: { text: string, color: string, visible:
           initial={{ opacity: 0, y: -5 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 5 }}
-          className="px-4 py-1.5 rounded-full border border-slate-200 bg-white/80 backdrop-blur-md shadow-sm"
+          className="px-4 py-1.5 rounded-full border border-slate-800 bg-[#0f172a]/80 backdrop-blur-md shadow-sm"
         >
           <span className="text-[10px] font-medium tracking-widest uppercase font-mono" style={{ color }}>
             {text}
@@ -170,7 +170,7 @@ const Tracker = ({ step, total = 5, color }: { step: number, total?: number, col
         const isActive = s === step;
         const isPast = s < step;
         return (
-          <div key={s} className="h-1 rounded-full transition-all duration-500 overflow-hidden bg-slate-200" style={{ width: isActive ? 24 : 8 }}>
+          <div key={s} className="h-1 rounded-full transition-all duration-500 overflow-hidden bg-slate-800" style={{ width: isActive ? 24 : 8 }}>
             {(isActive || isPast) && (
               <motion.div 
                 className="h-full w-full"
@@ -202,7 +202,7 @@ export function Visual1({
 }: Visual1Props) {
   // Provided for backwards compatibility with demo.tsx
   return (
-    <div aria-hidden className="relative h-full w-full overflow-hidden rounded-t-lg bg-slate-50">
+    <div aria-hidden className="relative h-full w-full overflow-hidden rounded-t-lg bg-[#0a0f1c]">
       <EllipseGradient color={mainColor} />
       <GridLayer color={gridColor} />
     </div>
@@ -250,7 +250,7 @@ export function VisualDataEngineering({
   ];
 
   return (
-    <div className="relative h-full w-full bg-slate-50 overflow-hidden select-none">
+    <div className="relative h-full w-full bg-[#0a0f1c] overflow-hidden select-none">
       <GridLayer color={gridColor} />
       <EllipseGradient color={mainColor} />
       
@@ -342,7 +342,7 @@ export function VisualDataWarehousing({
   ];
 
   return (
-    <div className="relative h-full w-full bg-slate-50 overflow-hidden select-none">
+    <div className="relative h-full w-full bg-[#0a0f1c] overflow-hidden select-none">
       <GridLayer color={gridColor} />
       <EllipseGradient color={mainColor} />
       
@@ -423,7 +423,7 @@ export function VisualAnalytics({
   ];
 
   return (
-    <div className="relative h-full w-full bg-slate-50 overflow-hidden select-none">
+    <div className="relative h-full w-full bg-[#0a0f1c] overflow-hidden select-none">
       <GridLayer color={gridColor} />
       <EllipseGradient color={mainColor} />
       
@@ -501,7 +501,7 @@ export function VisualCloudPlatform({
   ];
 
   return (
-    <div className="relative h-full w-full bg-slate-50 overflow-hidden select-none">
+    <div className="relative h-full w-full bg-[#0a0f1c] overflow-hidden select-none">
       <GridLayer color={gridColor} />
       <EllipseGradient color={mainColor} />
       

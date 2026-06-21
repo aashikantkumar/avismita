@@ -129,19 +129,19 @@ function BrowserVisual({
   const Visual = section.VisualComponent;
 
   return (
-    <div className="w-full max-w-2xl rounded-xl bg-white border border-slate-200 overflow-hidden shadow-xl">
-      <div className="flex items-center px-4 py-3 bg-slate-50 border-b border-slate-200 relative">
+    <div className="w-full max-w-2xl rounded-xl bg-[#0a0f1c] border border-slate-800 overflow-hidden shadow-2xl">
+      <div className="flex items-center px-4 py-3 bg-[#0f172a] border-b border-slate-800 relative">
         <div className="flex gap-2 absolute left-4">
           <div className="w-3 h-3 rounded-full bg-red-500/80" />
           <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
           <div className="w-3 h-3 rounded-full bg-green-500/80" />
         </div>
-        <div className="mx-auto max-w-[calc(100%-96px)] truncate px-4 sm:px-6 py-1.5 rounded-full bg-white border border-slate-200 text-[10px] sm:text-xs text-slate-400 font-mono tracking-wide flex items-center gap-2 shadow-sm">
+        <div className="mx-auto max-w-[calc(100%-96px)] truncate px-4 sm:px-6 py-1.5 rounded-full bg-[#0a0f1c] border border-slate-800 text-[10px] sm:text-xs text-slate-400 font-mono tracking-wide flex items-center gap-2 shadow-sm">
           <span className="w-1.5 h-1.5 rounded-full flex-none" style={{ backgroundColor: section.mainColor }} />
           <span className="truncate">studio.avismita.ai/platform/{section.title.toLowerCase().replace(" ", "-")}</span>
         </div>
       </div>
-      <div className="p-0 bg-slate-50 h-[300px] sm:h-[380px] lg:h-[450px] flex items-center justify-center relative overflow-hidden">
+      <div className="p-0 bg-[#0a0f1c] h-[300px] sm:h-[380px] lg:h-[450px] flex items-center justify-center relative overflow-hidden">
         <div className="w-[350px] h-[180px] scale-[0.92] sm:scale-[1.45] md:scale-[1.6] lg:scale-[1.8] origin-center z-10 flex-shrink-0">
           <Visual mainColor={section.mainColor} secondaryColor={section.secondaryColor} step={isActive ? step : 1} />
         </div>
@@ -233,7 +233,7 @@ function MasterScrollTelling() {
                     onClick={() => scrollToSection(idx)}
                     className={`h-10 rounded-full border px-4 text-xs font-semibold transition-all duration-300 ${isActive
                       ? "bg-slate-900 text-slate-50 border-slate-900 shadow-sm"
-                      : "bg-white/80 text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-900"
+                      : "bg-[#0a0f1c]/80 text-slate-400 border-slate-800 hover:border-slate-700 hover:text-slate-200"
                     }`}
                     aria-pressed={isActive}
                   >
@@ -344,7 +344,7 @@ function MobileServiceCards({ forceVisible = false }: { forceVisible?: boolean }
     <div className={`w-full relative z-30 px-5 pb-20 ${forceVisible ? "block" : "block md:hidden"}`}>
       <div className="max-w-2xl mx-auto space-y-8">
         {sectionsData.map((section, idx) => (
-          <article key={section.title} className="rounded-xl border border-slate-800 bg-slate-900/90 shadow-lg overflow-hidden">
+          <article key={section.title} className="rounded-xl border border-slate-800 bg-[#0a0f1c] shadow-lg overflow-hidden">
             <div className="p-5 space-y-4">
               <div className="flex items-start gap-4">
                 <div className="text-3xl font-bold font-mono flex-none" style={{ color: section.mainColor }}>
@@ -384,9 +384,9 @@ export function WhatWeDo() {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   return (
-    <GeometricBackground>
+    <GeometricBackground dark={true}>
       <div id="what-we-do" className="pt-28 md:pt-32 pb-12 md:pb-16 px-6 md:px-12 max-w-[1550px] mx-auto text-center relative z-20 scroll-mt-8">
-        <h2 className="text-4xl md:text-6xl font-bold font-sans text-slate-900">
+        <h2 className="text-4xl md:text-6xl font-bold font-sans text-slate-100">
           What We Do
         </h2>
         <p className="text-slate-400 mt-6 max-w-2xl mx-auto text-lg md:text-xl">

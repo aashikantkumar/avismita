@@ -73,13 +73,15 @@ function ElegantShape({
 export default function GeometricBackground({
   children,
   className,
+  dark = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  dark?: boolean;
 }) {
   return (
     <div
-      className={cn("relative w-full bg-slate-50", className)}
+      className={cn("relative w-full", dark ? "bg-[#020617]" : "bg-slate-50", className)}
     >
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="sticky top-0 h-screen w-full overflow-hidden">
@@ -137,7 +139,10 @@ export default function GeometricBackground({
       <div className="relative z-10 w-full">
         {children}
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-slate-50/80 pointer-events-none z-0" />
+      <div className={cn(
+        "absolute inset-0 bg-gradient-to-t pointer-events-none z-0",
+        dark ? "from-[#020617] via-transparent to-[#020617]/80" : "from-slate-50 via-transparent to-slate-50/80"
+      )} />
     </div>
   );
 }
