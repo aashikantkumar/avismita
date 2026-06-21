@@ -7,13 +7,11 @@ import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from
 
 interface LocationMapProps {
   location?: string
-  coordinates?: string
   className?: string
 }
 
 export function LocationMap({
   location = "Kolkata, India",
-  coordinates = "Remote-First Global Delivery Model",
   className,
 }: LocationMapProps) {
   const [isHovered, setIsHovered] = useState(false)
@@ -321,7 +319,7 @@ export function LocationMap({
                   exit={{ opacity: 0, y: -10, height: 0 }}
                   transition={{ duration: 0.25 }}
                 >
-                  {coordinates}
+
                 </motion.p>
               )}
             </AnimatePresence>

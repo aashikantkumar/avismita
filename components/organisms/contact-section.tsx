@@ -68,7 +68,7 @@ export function ContactSection() {
               {
                 icon: MapPinIcon,
                 label: 'Location',
-                value: 'Bankura, West Bengal 700102, India',
+                value: 'Kolkata, West Bengal 700102, India',
                 className: 'col-span-2',
               }
             ]}
