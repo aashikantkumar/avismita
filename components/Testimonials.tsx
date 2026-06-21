@@ -6,24 +6,8 @@ import { Star, Quote } from "lucide-react";
 
 const testimonials = [
   {
-    name: "Sarah Jenkins",
-    company: "FinTech Global",
-    position: "Chief Data Officer",
+    name: "Srivatsav",
     feedback: "Avismita transformed our messy data pipelines into a streamlined, automated Databricks architecture. Query times dropped by 80% and our data teams are finally focusing on insights rather than maintenance.",
-    rating: 5,
-  },
-  {
-    name: "David Chen",
-    company: "RetailX AI",
-    position: "VP of Engineering",
-    feedback: "The level of expertise Abhijeet and his team brought to our Snowflake migration was unmatched. They handled petabytes of historical data flawlessly with zero downtime for our production machine learning models.",
-    rating: 5,
-  },
-  {
-    name: "Marcus Thorne",
-    company: "HealthSync Solutions",
-    position: "Director of Analytics",
-    feedback: "We needed an enterprise-grade cloud platform on Azure that met strict compliance standards. They didn't just build it; they engineered a fault-tolerant system that has run seamlessly since deployment.",
     rating: 5,
   }
 ];
@@ -33,9 +17,9 @@ export function Testimonials() {
     <section className="relative w-full bg-[#000000] text-slate-50 py-24 border-t border-white/5 overflow-hidden">
       {/* Background gradients */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900/10 via-[#000000] to-[#000000] pointer-events-none" />
-      
+
       <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
-        
+
         <div className="text-center mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -72,7 +56,7 @@ export function Testimonials() {
                     <Star key={i} size={16} className="fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                
+
                 <p className="text-sm md:text-base text-slate-300 leading-relaxed mb-8 italic">
                   "{testimonial.feedback}"
                 </p>
@@ -80,12 +64,7 @@ export function Testimonials() {
 
               <div className="mt-auto border-t border-white/10 pt-6">
                 <h4 className="text-lg font-bold text-white mb-1">{testimonial.name}</h4>
-                <div className="text-xs font-mono text-indigo-400 uppercase tracking-wider font-bold mb-1">
-                  {testimonial.position}
-                </div>
-                <div className="text-xs text-slate-500">
-                  {testimonial.company}
-                </div>
+
               </div>
             </motion.div>
           ))}
