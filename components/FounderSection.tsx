@@ -10,7 +10,7 @@ const leaders = [
   {
     name: "Abhijeet Kumar Acharya",
     role: "Founder & CEO",
-    description: "Data Engineer specializing in Databricks, Azure, Microsoft Fabric, Snowflake and large-scale analytics platforms. Bridging the gap between complex engineering challenges and scalable business value.",
+    description: "Senior Lead Engineer with 4.5+ years of experience architecting high-performance ETL pipelines and Lakehouse architectures for large-scale workloads. Proven track record of leading engineering teams and delivering scalable, cost-optimized data solutions across AWS, Snowflake, Databricks, Azure, and Microsoft Fabric that improve processing efficiency by up to 70%.",
     tags: [
       "Databricks",
       "Snowflake",

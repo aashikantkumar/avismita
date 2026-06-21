@@ -970,16 +970,17 @@ export function DataLifecycleHero() {
             </div>
 
             {/* Giant Premium Headline */}
-            <h1 className="text-[36px] sm:text-[46px] md:text-[54px] lg:text-[62px] font-extrabold uppercase tracking-tight leading-[1.05] text-white font-sans max-w-xl">
-              Databricks, Snowflake & <br className="hidden md:inline" />
+            <h1 className="text-[36px] sm:text-[46px] md:text-[54px] lg:text-[62px] font-extrabold tracking-tight leading-[1.05] text-white font-sans max-w-xl">
+              We Build Modern <br className="hidden md:inline" />
               <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-emerald-400 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(59,130,246,0.15)]">
-                Microsoft Fabric Consulting
-              </span>
+                Data Platforms
+              </span> <br className="hidden md:inline" />
+              That Drive Real Impact
             </h1>
 
             {/* Subheadline */}
             <p className="text-[13px] md:text-[15px] text-slate-400 leading-relaxed max-w-[500px]">
-              We help startups and enterprises build scalable data platforms, analytics solutions, and modern cloud architectures using Databricks, Snowflake, Microsoft Fabric, Azure, and AWS.
+              We help startups and enterprises design, build and scale data platforms, analytics solutions and AI-powered applications using Databricks, Snowflake, Microsoft Fabric, Azure and AWS
             </p>
 
             {/* CTA Buttons */}
